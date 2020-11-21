@@ -153,35 +153,17 @@ dy_100_1 = sin(phi_100_1).*d_100;
 dx_100_2 = cos(phi_100_2).*d_100;
 dy_100_2 = sin(phi_100_2).*d_100;
 
-% Graphiques 1D ---
-% 15 deg
+funcs_to_plot = {dx_50_1, dx_50_2, dy_50_1, dy_50_2, dx_100_1, dx_100_2, dy_100_1, dy_100_2};
+funcs_titles = {'Dx = 50 (15 deg)', 'Dx = 50 (30 deg)', 'Dy = 50 (15 deg)', 'Dy = 50 (30 deg)', 'Dx = 100 (15 deg)', 'Dx = 100 (30 deg)', 'Dy = 100 (15 deg)', 'Dy = 100 (30 deg)'};
+
 figure
-subplot(2,2,1)
-scatter(indice, dx_50_1, 1)
-title('Dx 50 (15 deg)')
-subplot(2,2,2)
-scatter(indice, dy_50_1, 1)
-title('Dy 50 (15 deg)')
-subplot(2,2,3)
-scatter(indice, dx_100_1, 1)
-title('Dx 100 (15 deg)')
-subplot(2,2,4)
-scatter(indice, dy_100_1, 1)
-title('Dy 100 (15 deg)')
-% 30 deg
-figure
-subplot(2,2,1)
-scatter(indice, dx_50_2, 1)
-title('Dx 50 (30 deg)')
-subplot(2,2,2)
-scatter(indice, dy_50_2, 1)
-title('Dy 50 (30 deg)')
-subplot(2,2,3)
-scatter(indice, dx_100_2, 1)
-title('Dx 100 (30 deg)')
-subplot(2,2,4)
-scatter(indice, dy_100_2, 1)
-title('Dy 100 (30 deg)')
+for i = [1:length(funcs_to_plot)]
+    subplot(2, 4, i);
+    data = cell2mat(funcs_to_plot(i));
+    scatter(indice, data, 1);
+    plot_title = funcs_titles(i);
+    title(plot_title);
+end
 
 % Graphiques 2D ---
 % 15 deg
@@ -194,7 +176,8 @@ subplot(2,2,2)
 scatter(dx_100_1, dy_100_1, 1)
 title('Dx 100 (15 deg)')
 axis([0 120 1 80])
-%30 deg
+
+% 30 deg
 subplot(2,2,3)
 scatter(dx_50_2, dy_50_2, 1)
 title('Dy 50 (30 deg)')
@@ -207,11 +190,7 @@ axis([0 120 1 80])
 %----------------------------------------------------
 
 %5) -------------------------------------------------
-
-funcs_to_plot = {dx_50_1, dx_50_2, dy_50_1, dy_50_2, dx_100_1, dx_100_2, dy_100_1, dy_100_2};
-funcs_titles = {'Dx = 50 (15 deg)', 'Dx = 50 (30 deg)', 'Dy = 50 (15 deg)', 'Dy = 50 (30 deg)', 'Dx = 100 (15 deg)', 'Dx = 100 (30 deg)', 'Dy = 100 (15 deg)', 'Dy = 100 (30 deg)'};
-             
-%figure
+      
 for i = [1:length(funcs_to_plot)]
     figure(99)
     subplot(2, 4, i);
