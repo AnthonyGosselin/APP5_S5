@@ -6,12 +6,10 @@ clc
 % Valeurs à D0 = 50
 d0_50 = 50;
 var_50 = 4;
-phi0_50 = 15; % degrés
 
 %Valeurs à D0 = 100
 d0_100 = 100;
 var_100 = 16;
-phi0_100 = 30; % degrés
 
 phi0_15 = 15;
 phi0_30 = 30;
@@ -115,37 +113,40 @@ subplot(2,1,2)
 scatter(r_100, theta, 1)
 title('Couple r et theta avec variance = 16')
 %----------------------------------------------------
-
+%%
 %3) -------------------------------------------------
-% % D0 = 50
-% d_50 = sqrt(d0_50^2 + 2*d0_50*r_50.*cos(theta) + r_50.^2);
-% phi_50 = (phi0_50 + atan(r_50.*sin(theta)./(d0_50 + r_50.*cos(theta)))) / 180 * pi;
-% 
-% % D0 = 100
-% d_100 = sqrt(d0_100^2 + 2*d0_100*r_100.*cos(theta) + r_100.^2);
-% phi_100 = (phi0_100 + atan(r_100.*sin(theta)./(d0_100 + r_100.*cos(theta)))) / 180 * pi;
+% D0 = 50
+d_50 = sqrt(d0_50^2 + 2*d0_50*r_50.*cos(theta) + r_50.^2);
+phi_50_1 = (phi0_15 + atand(r_50.*sin(theta)./(d0_50 + r_50.*cos(theta)))) / 180 * pi;
+phi_50_2 = (phi0_30 + atand(r_50.*sin(theta)./(d0_50 + r_50.*cos(theta)))) / 180 * pi;
+
+% D0 = 100
+d_100 = sqrt(d0_100^2 + 2*d0_100*r_100.*cos(theta) + r_100.^2);
+phi_100_1 = (phi0_15 + atand(r_100.*sin(theta)./(d0_100 + r_100.*cos(theta)))) / 180 * pi;
+phi_100_2 = (phi0_30 + atand(r_100.*sin(theta)./(d0_100 + r_100.*cos(theta)))) / 180 * pi;
 
 % Calculs en degrés, puis convertit en radians:
 % D0 = 50
-d_50 = d0_50 + r_50.*cos(theta);
-phi_50_1 = (phi0_50 + r_50.*sin(theta))/ 180 * pi;
-phi_50_2 = (phi0_30 + r_50.*sin(theta))/ 180 * pi;
+% d_50 = d0_50 + r_50.*cos(theta);
+% phi_50_1 = (phi0_15 + r_50.*sin(theta))/ 180 * pi;
+% phi_50_2 = (phi0_30 + r_50.*sin(theta))/ 180 * pi;
+% 
+% % D0 = 100
+% d_100 = d0_100 + r_100.*cos(theta);
+% phi_100_2 = (phi0_30 + r_100.*sin(theta))/ 180 * pi;
+% phi_100_1 = (phi0_15 + r_100.*sin(theta))/ 180 * pi;
 
-% D0 = 100
-d_100 = d0_100 + r_100.*cos(theta);
-phi_100_2 = (phi0_100 + r_100.*sin(theta))/ 180 * pi;
-phi_100_1 = (phi0_15 + r_100.*sin(theta))/ 180 * pi;
 
 %----------------------------------------------------
 
 %4) -------------------------------------------------
+
 indice = (1:N);
 dx_50_1 = cos(phi_50_1).*d_50;
 dy_50_1 = sin(phi_50_1).*d_50;
 
 dx_50_2 = cos(phi_50_2).*d_50;
 dy_50_2 = sin(phi_50_2).*d_50;
-
 
 dx_100_1 = cos(phi_100_1).*d_100;
 dy_100_1 = sin(phi_100_1).*d_100;
@@ -170,23 +171,23 @@ end
 figure
 subplot(2,2,1)
 scatter(dx_50_1, dy_50_1, 1)
-title('Dx 50 (15 deg)')
+title('D0 50 (15 deg)')
 axis([0 60 1 35])
 subplot(2,2,2)
 scatter(dx_100_1, dy_100_1, 1)
-title('Dx 100 (15 deg)')
+title('D0 100 (15 deg)')
 axis([0 120 1 80])
 
 % 30 deg
 subplot(2,2,3)
 scatter(dx_50_2, dy_50_2, 1)
-title('Dy 50 (30 deg)')
+title('D0 50 (30 deg)')
 axis([0 60 1 35])
 subplot(2,2,4)
 scatter(dx_100_2, dy_100_2, 1)
-title('Dy 100 (30 deg)')
+title('D0 100 (30 deg)')
 axis([0 120 1 80])
-
+%%
 %----------------------------------------------------
 
 %5) -------------------------------------------------
@@ -232,7 +233,7 @@ figure
 for i = [1:length(funcs_to_plot)] 
     subplot(2, 4, i)
     data = cell2mat(funcs_to_plot(i));
-    [freq_abs, edges] = histcounts(data);
+    [freq_abs, edges] = histcounts(data, 15);
     bin_mdpt=(edges(2:end)+edges(1:(end-1)))/2;
     freq_rel = freq_abs/N;
     stem(bin_mdpt, freq_rel);
