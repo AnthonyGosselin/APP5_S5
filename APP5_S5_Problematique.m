@@ -207,13 +207,11 @@ axis([0 120 1 80])
 %----------------------------------------------------
 
 %5) -------------------------------------------------
-%%
+
 funcs_to_plot = {dx_50_1, dx_50_2, dy_50_1, dy_50_2, dx_100_1, dx_100_2, dy_100_1, dy_100_2};
 funcs_titles = {'Dx = 50 (15 deg)', 'Dx = 50 (30 deg)', 'Dy = 50 (15 deg)', 'Dy = 50 (30 deg)', 'Dx = 100 (15 deg)', 'Dx = 100 (30 deg)', 'Dy = 100 (15 deg)', 'Dy = 100 (30 deg)'};
              
 %figure
-funcs_moyenne = {}
-funcs_ecart_type = {}
 for i = [1:length(funcs_to_plot)]
     figure(99)
     subplot(2, 4, i);
@@ -227,9 +225,6 @@ for i = [1:length(funcs_to_plot)]
     moyenne = mean(data);
     ecart_type = sqrt(var(data));
     
-    funcs_moyenne(i) = mat2cell(moyenne, 1);
-    funcs_ecart_type(i) = mat2cell(ecart_type, 1);
-    
     % Freqence relative
     figure(98)
     subplot(2, 4, i);
@@ -242,7 +237,6 @@ for i = [1:length(funcs_to_plot)]
     axis([-5 120 0 0.09]);
     txt = {['Moyenne = ', num2str(moyenne)],['s = ', num2str(ecart_type)]};
     text(10,0.08,txt)
-    
 end
 %----------------------------------------------------
 
@@ -250,14 +244,32 @@ end
 % AH BEN CALINE, WHAT A SURPRISE, ON DIRAIT DES COURBES NORMALES
 
 % Les distributions Dx et Dy ressemblent tous à des Normales (avec moyennes
-% et ecart type différents.
-
-% Les valeurs des moyennes et ecarts-types estimés dans les arrays: 'funcs_moyenne'
-% et 'funcs_ecart_type'
+% et ecart type différents).
 
 % (On pourrait plot les courbes théoriques par dessus les courbes
 % d'échantillon: avec normpdf() )
 
+figure
+for i = [1:length(funcs_to_plot)] 
+    subplot(2, 4, i)
+    data = cell2mat(funcs_to_plot(i));
+    [freq_abs, edges] = histcounts(data);
+    bin_mdpt=(edges(2:end)+edges(1:(end-1)))/2;
+    freq_rel = freq_abs/N;
+    stem(bin_mdpt, freq_rel);
+
+    hold on
+    mu = mean(data);
+    sigma = sqrt(var(data));
+    norm_X = (bin_mdpt(1):0.01:bin_mdpt(end));
+    plot(norm_X, normpdf(norm_X, mu, sigma));
+    
+    plot_title = funcs_titles(i);
+    title(plot_title);
+end
+
+% Hmm, ok la courbe normale ne semble pas correspondre à toutes les
+% courbes... (mais juste par un facteur d'échelle tout le temps)
 %----------------------------------------------------
 
 %7) -------------------------------------------------
