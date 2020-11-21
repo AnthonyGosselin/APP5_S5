@@ -117,55 +117,57 @@ title('Couple r et theta avec variance = 16')
 %----------------------------------------------------
 
 %3) -------------------------------------------------
-% % D0 = 50
-% d_50 = sqrt(d0_50^2 + 2*d0_50*r_50.*cos(theta) + r_50.^2);
-% phi_50 = (phi0_50 + atan(r_50.*sin(theta)./(d0_50 + r_50.*cos(theta)))) / 180 * pi;
-% 
-% % D0 = 100
-% d_100 = sqrt(d0_100^2 + 2*d0_100*r_100.*cos(theta) + r_100.^2);
-% phi_100 = (phi0_100 + atan(r_100.*sin(theta)./(d0_100 + r_100.*cos(theta)))) / 180 * pi;
-
-% Calculs en degrés, puis convertit en radians:
 % D0 = 50
-d_50 = d0_50 + r_50.*cos(theta);
-phi_50_1 = (phi0_50 + r_50.*sin(theta))/ 180 * pi;
-phi_50_2 = (phi0_30 + r_50.*sin(theta))/ 180 * pi;
+d_50 = sqrt(d0_50^2 + 2*d0_50*r_50.*cos(theta) + r_50.^2);
+phi_50_1 = phi0_15 + atand(r_50.*sin(theta)./(d0_50 + r_50.*cos(theta)));
+phi_50_2 = phi0_30 + atand(r_50.*sin(theta)./(d0_50 + r_50.*cos(theta)));
 
 % D0 = 100
-d_100 = d0_100 + r_100.*cos(theta);
-phi_100_2 = (phi0_100 + r_100.*sin(theta))/ 180 * pi;
-phi_100_1 = (phi0_15 + r_100.*sin(theta))/ 180 * pi;
+d_100 = sqrt(d0_100^2 + 2*d0_100*r_100.*cos(theta) + r_100.^2);
+phi_100_1 = phi0_15 + atand(r_100.*sin(theta)./(d0_100 + r_100.*cos(theta)));
+phi_100_2 = phi0_30 + atand(r_100.*sin(theta)./(d0_100 + r_100.*cos(theta)));
+
+% % Calculs en degrés, puis convertit en radians:
+% % D0 = 50
+% d_50 = d0_50 + r_50.*cos(theta);
+% phi_50_1 = (phi0_50 + r_50.*sin(theta))/ 180 * pi;
+% phi_50_2 = (phi0_30 + r_50.*sin(theta))/ 180 * pi;
+% 
+% % D0 = 100
+% d_100 = d0_100 + r_100.*cos(theta);
+% phi_100_2 = (phi0_100 + r_100.*sin(theta))/ 180 * pi;
+% phi_100_1 = (phi0_15 + r_100.*sin(theta))/ 180 * pi;
 
 %----------------------------------------------------
 
 %4) -------------------------------------------------
 % Valeurs Dx et Dy totales
-d0x_50_1 = cos(phi0_15)*d0_50;
-d0y_50_1 = sin(phi0_15)*d0_50;
+indice = (1:N);
+dx_50_1 = cosd(phi_50_1).*d_50;
+dy_50_1 = sind(phi_50_1).*d_50;
 
-d0x_50_2 = cos(phi0_30)*d0_50;
-d0y_50_2 = sin(phi0_30)*d0_50;
+dx_50_2 = cosd(phi_50_2).*d_50;
+dy_50_2 = sind(phi_50_2).*d_50;
 
-d0x_100_1 = cos(phi0_15)*d0_100;
-d0y_100_1 = sin(phi0_15)*d0_100;
+dx_100_1 = cosd(phi_100_1).*d_100;
+dy_100_1 = sind(phi_100_1).*d_100;
 
-d0x_100_2 = cos(phi0_30)*d0_100;
-d0y_100_2 = sin(phi0_30)*d0_100;
+dx_100_2 = cosd(phi_100_2).*d_100;
+dy_100_2 = sind(phi_100_2).*d_100;
+
 
 % Valeurs Dx et Dy déterministes
-indice = (1:N);
-dx_50_1 = cos(phi_50_1).*d_50;
-dy_50_1 = sin(phi_50_1).*d_50;
+d0x_50_1 = cosd(phi0_15)*d0_50;
+d0y_50_1 = sind(phi0_15)*d0_50;
 
-dx_50_2 = cos(phi_50_2).*d_50;
-dy_50_2 = sin(phi_50_2).*d_50;
+d0x_50_2 = cosd(phi0_30)*d0_50;
+d0y_50_2 = sind(phi0_30)*d0_50;
 
+d0x_100_1 = cosd(phi0_15)*d0_100;
+d0y_100_1 = sind(phi0_15)*d0_100;
 
-dx_100_1 = cos(phi_100_1).*d_100;
-dy_100_1 = sin(phi_100_1).*d_100;
-
-dx_100_2 = cos(phi_100_2).*d_100;
-dy_100_2 = sin(phi_100_2).*d_100;
+d0x_100_2 = cosd(phi0_30)*d0_100;
+d0y_100_2 = sind(phi0_30)*d0_100;
 
 
 %Valeurs Dx et Dy aléatoires
@@ -175,12 +177,12 @@ dy_50_1_alea = dy_50_1 - d0y_50_1;
 dx_50_2_alea = dx_50_2 - d0x_50_2;
 dy_50_2_alea = dy_50_2 - d0y_50_2;
 
-
 dx_100_1_alea = dx_100_1 - d0x_100_1;
 dy_100_1_alea = dy_100_1 - d0y_100_1;
 
 dx_100_2_alea = dx_100_2 - d0x_100_2;
 dy_100_2_alea = dy_100_2 - d0y_100_2;
+
 
 % Plot des fonctions
 %funcs_to_plot = {dx_50_1, dx_50_2, dy_50_1, dy_50_2, dx_100_1, dx_100_2, dy_100_1, dy_100_2};
@@ -288,11 +290,19 @@ end
 %----------------------------------------------------
 
 %8) -------------------------------------------------
-% Covariance
-mat_cov_50_15 = cov()
+% Calcul de covariance, à voir s'il faut le faire à la main avec les sommes
+
+
+
+
+% Covariance avec fonction matlab
+mat_cov_50_1 = cov(dx_50_1_alea, dy_50_1_alea);
+mat_cov_50_2 = cov(dx_50_2_alea, dy_50_2_alea);
+mat_cov_100_1 = cov(dx_100_1_alea, dy_100_1_alea);
+mat_cov_100_2 = cov(dx_100_2_alea, dy_100_2_alea);
 
 %----------------------------------------------------
 
 %9) -------------------------------------------------
-
+%
 %----------------------------------------------------

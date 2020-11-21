@@ -290,15 +290,27 @@ end
 %----------------------------------------------------
 
 %8) -------------------------------------------------
-% Calcul de covariance, à voir s'il faut le faire à la main avec les sommes
-% Covariance
-mat_cov_50_1 = cov(dx_50_1_alea, dy_50_1_alea);
-mat_cov_50_2 = cov(dx_50_2_alea, dy_50_2_alea);
-mat_cov_100_1 = cov(dx_100_1_alea, dy_100_1_alea);
-mat_cov_100_2 = cov(dx_100_2_alea, dy_100_2_alea);
+% Calcul de covariance, à la main
+mat_50_1_prime = [dx_50_1_alea - mean(dx_50_1_alea); dy_50_1_alea - mean(dy_50_1_alea)];
+mat_50_2_prime = [dx_50_2_alea - mean(dx_50_2_alea); dy_50_2_alea - mean(dy_50_2_alea)];
+mat_100_1_prime = [dx_100_1_alea - mean(dx_100_1_alea); dy_100_1_alea - mean(dy_100_1_alea)];
+mat_100_2_prime = [dx_100_2_alea - mean(dx_100_2_alea); dy_100_2_alea - mean(dy_100_2_alea)];
+
+mat_cov_50_1 = mat_50_1_prime * mat_50_1_prime' / N;
+mat_cov_50_2 = mat_50_2_prime * mat_50_2_prime' / N;
+mat_cov_100_1 = mat_100_1_prime * mat_100_1_prime' / N;
+mat_cov_100_2 = mat_100_2_prime * mat_100_2_prime' / N;
+
+% Covariance avec fonction matlab
+mat_cov_50_1_fct = cov(dx_50_1_alea, dy_50_1_alea);
+mat_cov_50_2_fct = cov(dx_50_2_alea, dy_50_2_alea);
+mat_cov_100_1_fct = cov(dx_100_1_alea, dy_100_1_alea);
+mat_cov_100_2_fct = cov(dx_100_2_alea, dy_100_2_alea);
 
 %----------------------------------------------------
 
 %9) -------------------------------------------------
 %
+
+
 %----------------------------------------------------
