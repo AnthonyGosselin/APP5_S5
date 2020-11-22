@@ -69,36 +69,36 @@ title('CDF Inverse D0 = 100')
 % Générateur aléatoire
 distribution = rand(1,N);
 
-cloche_50 = [];
-cloche_100 = [];
+r_rand_50 = [];
+r_rand_100 = [];
 index = 1;
 for val = distribution
    val = floor(val * N)+1;
-   cloche_50(index) = r_50(val);
-   cloche_100(index) = r_100(val);
+   r_rand_50(index) = r_50(val);
+   r_rand_100(index) = r_100(val);
    index = index+1;
 end
 
 % f)------------------------
 figure
 subplot(2,1,1)
-histogram(cloche_50)
+histogram(r_rand_50)
 title('Histogramme aléatoire D0 = 50')
 xlim([-1 18])
 subplot(2,1,2)
-histogram(cloche_100)
+histogram(r_rand_100)
 title('Histogramme aléatoire D0 = 100')
 xlim([-1 18])
 
 % g)------------------------
 figure
 subplot(2,1,1)
-Rayleigh_th_50 = raylrnd(mean(r_50)*sqrt(2/pi), N, 1);
+Rayleigh_th_50 = raylrnd(mean(r_rand_50)*sqrt(2/pi), N, 1);
 histogram(Rayleigh_th_50)
 title('Rayleigh théorique D0 = 50')
 xlim([-1 18])
 subplot(2,1,2)
-Rayleigh_th_100 = raylrnd(mean(r_100)*sqrt(2/pi), N, 1);
+Rayleigh_th_100 = raylrnd(mean(r_rand_100)*sqrt(2/pi), N, 1);
 histogram(Rayleigh_th_100)
 title('Rayleigh théorique D0 = 100')
 xlim([-1 18])
@@ -107,35 +107,35 @@ xlim([-1 18])
 %2) -------------------------------------------------
 figure
 subplot(2,1,1)
-scatter(r_50, theta, 1)
+scatter(r_rand_50, theta, 1)
 title('Couple r et theta avec variance = 4')
 subplot(2,1,2)
-scatter(r_100, theta, 1)
+scatter(r_rand_100, theta, 1)
 title('Couple r et theta avec variance = 16')
 %----------------------------------------------------
 %%
 %3) -------------------------------------------------
 
 % D0 = 50
-d_50 = sqrt(d0_50^2 + 2*d0_50*r_50.*cos(theta) + r_50.^2);
-phi_50_1 = phi0_15 + atand(r_50.*sin(theta)./(d0_50 + r_50.*cos(theta)));
-phi_50_2 = phi0_30 + atand(r_50.*sin(theta)./(d0_50 + r_50.*cos(theta)));
+d_50 = sqrt(d0_50^2 + 2*d0_50*r_rand_50.*cos(theta) + r_rand_50.^2);
+phi_50_1 = phi0_15 + atand(r_rand_50.*sin(theta)./(d0_50 + r_rand_50.*cos(theta)));
+phi_50_2 = phi0_30 + atand(r_rand_50.*sin(theta)./(d0_50 + r_rand_50.*cos(theta)));
 
 % D0 = 100
-d_100 = sqrt(d0_100^2 + 2*d0_100*r_100.*cos(theta) + r_100.^2);
-phi_100_1 = phi0_15 + atand(r_100.*sin(theta)./(d0_100 + r_100.*cos(theta)));
-phi_100_2 = phi0_30 + atand(r_100.*sin(theta)./(d0_100 + r_100.*cos(theta)));
+d_100 = sqrt(d0_100^2 + 2*d0_100*r_rand_100.*cos(theta) + r_rand_100.^2);
+phi_100_1 = phi0_15 + atand(r_rand_100.*sin(theta)./(d0_100 + r_rand_100.*cos(theta)));
+phi_100_2 = phi0_30 + atand(r_rand_100.*sin(theta)./(d0_100 + r_rand_100.*cos(theta)));
 
 % % Calculs en degrés, puis convertit en radians:
 % % D0 = 50
-% d_50 = d0_50 + r_50.*cos(theta);
-% phi_50_1 = (phi0_50 + r_50.*sin(theta))/ 180 * pi;
-% phi_50_2 = (phi0_30 + r_50.*sin(theta))/ 180 * pi;
+% d_50 = d0_50 + r_rand_50.*cos(theta);
+% phi_50_1 = (phi0_50 + r_rand_50.*sin(theta))/ 180 * pi;
+% phi_50_2 = (phi0_30 + r_rand_50.*sin(theta))/ 180 * pi;
 % 
 % % D0 = 100
-% d_100 = d0_100 + r_100.*cos(theta);
-% phi_100_2 = (phi0_100 + r_100.*sin(theta))/ 180 * pi;
-% phi_100_1 = (phi0_15 + r_100.*sin(theta))/ 180 * pi;
+% d_100 = d0_100 + r_rand_100.*cos(theta);
+% phi_100_2 = (phi0_100 + r_rand_100.*sin(theta))/ 180 * pi;
+% phi_100_1 = (phi0_15 + r_rand_100.*sin(theta))/ 180 * pi;
 
 %----------------------------------------------------
 
@@ -204,21 +204,21 @@ figure
 subplot(2,2,1)
 scatter(dx_50_1_alea, dy_50_1_alea, 1)
 title('D0 50 (15 deg)')
-% axis([0 60 1 35])
+axis([-15 15 -15 15])
 subplot(2,2,2)
 scatter(dx_100_1_alea, dy_100_1_alea, 1)
 title('D0 100 (15 deg)')
-% axis([0 120 1 80])
+axis([-15 15 -15 15])
 
 % 30 deg
 subplot(2,2,3)
 scatter(dx_50_2_alea, dy_50_2_alea, 1)
 title('D0 50 (30 deg)')
-% axis([0 60 1 35])
+axis([-15 15 -15 15])
 subplot(2,2,4)
 scatter(dx_100_2_alea, dy_100_2_alea, 1)
 title('D0 100 (30 deg)')
-% axis([0 120 1 80])
+axis([-15 15 -15 15])
 %%
 %----------------------------------------------------
 
@@ -348,16 +348,16 @@ var_100_y_2 = mat_cov_100_2(2, 2);
 
 % Calculs longueur d'axes
 l_axe_majeure_50_1 = 2*sqrt(var_50_x_1 * s)
-l_axe_mineure_50_1 = 2*sqrt(var_50_y_1 * s);
+l_axe_mineure_50_1 = 2*sqrt(var_50_y_1 * s)
 
-l_axe_majeure_50_2 = 2*sqrt(var_50_x_2 * s);
-l_axe_mineure_50_2 = 2*sqrt(var_50_y_2 * s);
+l_axe_majeure_50_2 = 2*sqrt(var_50_x_2 * s)
+l_axe_mineure_50_2 = 2*sqrt(var_50_y_2 * s)
 
-l_axe_majeure_100_1 = 2*sqrt(var_100_x_1 * s);
-l_axe_mineure_100_1 = 2*sqrt(var_100_y_1 * s);
+l_axe_majeure_100_1 = 2*sqrt(var_100_x_1 * s)
+l_axe_mineure_100_1 = 2*sqrt(var_100_y_1 * s)
 
-l_axe_majeure_100_2 = 2*sqrt(var_100_x_2 * s);
-l_axe_mineure_100_2 = 2*sqrt(var_100_y_2 * s);
+l_axe_majeure_100_2 = 2*sqrt(var_100_x_2 * s)
+l_axe_mineure_100_2 = 2*sqrt(var_100_y_2 * s)
 
 %% Cas où l'on suppose une corrélation en x et y
 s = 5.991; % NC = 95%
@@ -369,12 +369,13 @@ for i = (1:length(cov_mats))
     [eigen_vect, eigen_val] = eig(cov_data);
     [lambda1, lambda2, vect1, vect2] = getEigenValues(eigen_vect, eigen_val);
     i
+    
     l_axe_majeure = 2*sqrt(lambda1 * s)
     l_axe_mineure = 2*sqrt(lambda2 * s)
-    ang = rad2deg(atan(vect1(2)/vect1(1))) % SUREMENT UNE ERREUR ICI
+    ang = atand(vect1(2)/vect1(1))
+    
+    rho = cov_data(2) / (cov_data(1) * cov_data(4))
 end
-
-
 
 
 
