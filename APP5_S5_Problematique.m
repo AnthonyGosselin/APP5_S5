@@ -17,38 +17,59 @@ phi0_30 = 30;
 % 1)-------------------------------------------------
 % a)------------------------
 N = 10000;
+indice = (1:N);
 theta = rand(1, N) * 2 * pi;
+figure
+scatter(indice, theta, 1)
+title("Graphique des angles aléatoires générés uniformément")
+xlabel("Indice de l'angle généré")
+ylabel("Angle généré (rad)")
 % --> Faire le graphique des nombres générés?
 
 % b)------------------------
-figure(1)
+figure(2)
 histogram(theta)
+title("Histogramme de la distribution uniforme de theta")
+xlabel("Valeur de l'angle (rad)")
+ylabel("Nombre d'occurrences")
 
 % c)------------------------
 r = (0:0.01:16);
 index = 0;
-figure
+fig = figure;
 for variance = [0.25 1 4 9 16]
    index = index + 1;
    fR = r / variance .* exp(-r.^2/(2*variance));
    subplot(5, 1, index)
    plot(r, fR)
-   subplot_title = strcat('Rayleigh variance = ', num2str(variance));
+   subplot_title = strcat('Variance = ', num2str(variance));
    title(subplot_title)
 end
+sub = axes(fig, 'visible', 'off');
+sub.Title.Visible = 'on';
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+xlabel(sub, "Longueur de r (m)")
+ylabel(sub, 'Probabilité')
+title(sub, 'Loi de Rayleigh')
 
 % d)------------------------
 % CDF
 cdf_50 = 1- exp(-1 * r.^2 / (2*var_50));
 cdf_100 = 1- exp(-1 * r.^2 / (2*var_100));
 
-figure
+fig = figure;
 subplot(2,1,1)
 plot(cdf_50)
-title('CDF D0 = 50')
+title('CDF de la loi de Rayleigh avec D0 = 50 donc variance = 4')
 subplot(2,1,2)
 plot(cdf_100)
-title('CDF D0 = 100')
+title('CDF de la loi de Rayleigh avec D0 = 100 donc variance = 16')
+sub = axes(fig, 'visible', 'off');
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+xlabel(sub, "Longueur de r (m)")
+ylabel(sub, 'Probabilité')
 
 % e)------------------------
 dN = 1/N;
@@ -58,13 +79,18 @@ p = (0:dN:1-dN);
 r_50 = sqrt(-2*var_50*log(1-p));
 r_100 = sqrt(-2*var_100*log(1-p));
 
-figure
+fig = figure;
 subplot(2,1,1)
 plot(p, r_50)
-title('CDF Inverse D0 = 50')
+title('CDF Inverse de la loi de Rayleigh avec D0 = 50 donc variance = 4')
 subplot(2,1,2)
 plot(p, r_100)
-title('CDF Inverse D0 = 100')
+title('CDF Inverse de la loi de Rayleigh avec D0 = 100 donc variance = 16')
+sub = axes(fig, 'visible', 'off');
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+ylabel(sub, "Longueur de r (m)")
+xlabel(sub, 'Probabilité')
 
 % Générateur aléatoire
 distribution = rand(1,N);
@@ -80,38 +106,53 @@ for val = distribution
 end
 
 % f)------------------------
-figure
+fig = figure;
 subplot(2,1,1)
 histogram(r_rand_50)
-title('Histogramme aléatoire D0 = 50')
+title('Histogramme aléatoire D0 = 50 donc variance = 4')
 xlim([-1 18])
 subplot(2,1,2)
 histogram(r_rand_100)
-title('Histogramme aléatoire D0 = 100')
+title('Histogramme aléatoire D0 = 100 donc variance = 16')
 xlim([-1 18])
+sub = axes(fig, 'visible', 'off');
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+xlabel(sub, "Longueur de r (m)")
+ylabel(sub, 'Nombre d''occurrences')
 
 % g)------------------------
-figure
+fig = figure;
 subplot(2,1,1)
 Rayleigh_th_50 = raylrnd(mean(r_rand_50)*sqrt(2/pi), N, 1);
 histogram(Rayleigh_th_50)
-title('Rayleigh théorique D0 = 50')
+title('Rayleigh théorique pour D0 = 50 donc variance = 4')
 xlim([-1 18])
 subplot(2,1,2)
 Rayleigh_th_100 = raylrnd(mean(r_rand_100)*sqrt(2/pi), N, 1);
 histogram(Rayleigh_th_100)
-title('Rayleigh théorique D0 = 100')
+title('Rayleigh théorique pour D0 = 100 donc variance = 16')
 xlim([-1 18])
+sub = axes(fig, 'visible', 'off');
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+xlabel(sub, "Longueur de r (m)")
+ylabel(sub, 'Nombre d''occurrences')
 %----------------------------------------------------
 
 %2) -------------------------------------------------
-figure
+fig = figure;
 subplot(2,1,1)
 scatter(r_rand_50, theta, 1)
-title('Couple r et theta avec variance = 4')
+title('Couple [r, theta] avec variance = 4')
 subplot(2,1,2)
 scatter(r_rand_100, theta, 1)
-title('Couple r et theta avec variance = 16')
+title('Couple [r, theta] avec variance = 16')
+sub = axes(fig, 'visible', 'off');
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+xlabel(sub, "Longueur de r (m)")
+ylabel(sub, 'Valeur de l''angle theta (rad)')
 %----------------------------------------------------
 %%
 %3) -------------------------------------------------
@@ -187,9 +228,10 @@ dy_100_2_alea = dy_100_2 - d0y_100_2;
 funcs_to_plot_full = {dx_50_1, dx_50_2, dy_50_1, dy_50_2, dx_100_1, dx_100_2, dy_100_1, dy_100_2};
 funcs_to_plot = {dx_50_1_alea, dx_50_2_alea, dy_50_1_alea, dy_50_2_alea, ...
                  dx_100_1_alea, dx_100_2_alea, dy_100_1_alea, dy_100_2_alea};
-funcs_titles = {'Dx = 50 (15 deg)', 'Dx = 50 (30 deg)', 'Dy = 50 (15 deg)', 'Dy = 50 (30 deg)', 'Dx = 100 (15 deg)', 'Dx = 100 (30 deg)', 'Dy = 100 (15 deg)', 'Dy = 100 (30 deg)'};
+funcs_titles = {'Dx=50 Phi=15° (Var=4)', 'Dx=50 Phi=30° (Var=4)', 'Dy=50 Phi=15° (Var=4)', 'Dy=50 Phi=30° (Var=4)', ... 
+                'Dx=100 Phi=15° (Var=16)', 'Dx=100 Phi=30° (Var=16)', 'Dy=100 Phi=15° (Var=16)', 'Dy=100 Phi=30° (Var=16)'};
 
-figure(123)
+fig = figure(123);
 for i = [1:length(funcs_to_plot)]
     subplot(2, 4, i);
     data = cell2mat(funcs_to_plot(i));
@@ -197,35 +239,50 @@ for i = [1:length(funcs_to_plot)]
     plot_title = funcs_titles(i);
     title(plot_title);
 end
+sub = axes(fig, 'visible', 'off');
+sub.Title.Visible = 'on';
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+suptitle("Longueurs axiales de r selon leur index de génération")
+xlabel(sub, "Indice du nombre généré")
+ylabel(sub, 'Longueur axiale de r (m)')
 
 % Graphiques 2D ---
 % 15 deg
-figure
+fig = figure;
 subplot(2,2,1)
 scatter(dx_50_1_alea, dy_50_1_alea, 1)
-title('D0 50 (15 deg)')
+title('D0 = 50 Phi = 15° (Var = 4)')
 axis([-15 15 -15 15])
 subplot(2,2,2)
 scatter(dx_100_1_alea, dy_100_1_alea, 1)
-title('D0 100 (15 deg)')
+title('D0 = 100 Phi = 15° (Var = 4)')
 axis([-15 15 -15 15])
 
 % 30 deg
 subplot(2,2,3)
 scatter(dx_50_2_alea, dy_50_2_alea, 1)
-title('D0 50 (30 deg)')
+title('D0 = 50 Phi = 30° (Var = 16)')
 axis([-15 15 -15 15])
 subplot(2,2,4)
 scatter(dx_100_2_alea, dy_100_2_alea, 1)
-title('D0 100 (30 deg)')
+title('D0 = 100 Phi = 30° (Var = 16)')
 axis([-15 15 -15 15])
+
+sub = axes(fig, 'visible', 'off');
+sub.Title.Visible = 'on';
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+suptitle("Nuage de points Dx et Dy")
+xlabel(sub, "Distance axiale Dx (m)")
+ylabel(sub, 'Distance axiale Dy (m)')
 %%
 %----------------------------------------------------
 
 %5) -------------------------------------------------
       
 for i = [1:length(funcs_to_plot_full)]
-    figure(99)
+    fig = figure(99);
     subplot(2, 4, i);
     data = cell2mat(funcs_to_plot(i));
     histogram(data);
@@ -238,9 +295,18 @@ for i = [1:length(funcs_to_plot_full)]
     
     txt = {['Moyenne = ', num2str(moyenne)],['s = ', num2str(ecart_type)]};
     text(5,400,txt)
-    
+end
+sub = axes(fig, 'visible', 'off');
+sub.Title.Visible = 'on';
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+suptitle("Histogramme des distances axiales")
+xlabel(sub, "Distance axiale(m)")
+ylabel(sub, 'Nombre d''occurrences')
+
+for i = [1:length(funcs_to_plot_full)]
     % Freqence relative
-    figure(98)
+    fig = figure(98);
     subplot(2, 4, i);
     [freq_abs, edges] = histcounts(data);
     bin_mdpt=(edges(2:end)+edges(1:(end-1)))/2;
@@ -249,6 +315,14 @@ for i = [1:length(funcs_to_plot_full)]
     title(strcat(plot_title, ' freq rel(%)'));
 %     axis([-5 120 0 0.09]);
 end
+
+sub = axes(fig, 'visible', 'off');
+sub.Title.Visible = 'on';
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+suptitle("Fréquence relatives des distances axiales")
+xlabel(sub, "Distance axiale(m)")
+ylabel(sub, 'Probabilité')
 %----------------------------------------------------
 
 %6) -------------------------------------------------
@@ -260,7 +334,7 @@ end
 % (On pourrait plot les courbes théoriques par dessus les courbes
 % d'échantillon: avec normpdf() )
 
-figure
+fig = figure;
 for i = [1:length(funcs_to_plot_full)] 
     subplot(2, 4, i)
     data = cell2mat(funcs_to_plot(i));
@@ -275,16 +349,26 @@ for i = [1:length(funcs_to_plot_full)]
     plot_title = funcs_titles(i);
     title(plot_title);
 end
+sub = axes(fig, 'visible', 'off');
+sub.Title.Visible = 'on';
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+suptitle("Histogramme des distances axiales avec courbe normale")
+xlabel(sub, "Distance axiale(m)")
+ylabel(sub, 'Nombre d''occurrences')
+
 
 % Example pour fitter la courbe normale sur le graphique de freq rel. (il
 % faut ajuster le nombre de classes dans 'histcounts'
-figure
+fig = figure;
 data = cell2mat(funcs_to_plot(1));
 [freq_abs, edges] = histcounts(data, 15);
 bin_mdpt=(edges(2:end)+edges(1:(end-1)))/2;
 freq_rel = freq_abs/N;
 stem(bin_mdpt, freq_rel);
 title(strcat('EXEMPLE: ', plot_title, ' freq rel(%)'));
+xlabel('Longueur de r (m)')
+ylabel('Probabilité')
 
 hold on
 
@@ -316,10 +400,10 @@ mat_50_2_prime = [dx_50_2_alea - mean(dx_50_2_alea); dy_50_2_alea - mean(dy_50_2
 mat_100_1_prime = [dx_100_1_alea - mean(dx_100_1_alea); dy_100_1_alea - mean(dy_100_1_alea)];
 mat_100_2_prime = [dx_100_2_alea - mean(dx_100_2_alea); dy_100_2_alea - mean(dy_100_2_alea)];
 
-mat_cov_50_1 = mat_50_1_prime * mat_50_1_prime' / N;
-mat_cov_50_2 = mat_50_2_prime * mat_50_2_prime' / N;
-mat_cov_100_1 = mat_100_1_prime * mat_100_1_prime' / N;
-mat_cov_100_2 = mat_100_2_prime * mat_100_2_prime' / N;
+mat_cov_50_15 = mat_50_1_prime * mat_50_1_prime' / N;
+mat_cov_50_30 = mat_50_2_prime * mat_50_2_prime' / N;
+mat_cov_100_15 = mat_100_1_prime * mat_100_1_prime' / N;
+mat_cov_100_30 = mat_100_2_prime * mat_100_2_prime' / N;
 
 % Covariance avec fonction matlab
 mat_cov_50_1_fct = cov(dx_50_1_alea, dy_50_1_alea);
@@ -334,35 +418,35 @@ mat_cov_100_2_fct = cov(dx_100_2_alea, dy_100_2_alea);
 s = 5.991; % NC = 95%
 
 % Valeurs de variance
-var_50_x_1 = mat_cov_50_1(1, 1);
-var_50_y_1 = mat_cov_50_1(2, 2);
+var_50_x_1 = mat_cov_50_15(1, 1);
+var_50_y_1 = mat_cov_50_15(2, 2);
 
-var_50_x_2 = mat_cov_50_2(1, 1);
-var_50_y_2 = mat_cov_50_2(2, 2);
+var_50_x_2 = mat_cov_50_30(1, 1);
+var_50_y_2 = mat_cov_50_30(2, 2);
 
-var_100_x_1 = mat_cov_100_1(1, 1);
-var_100_y_1 = mat_cov_100_1(2, 2);
+var_100_x_1 = mat_cov_100_15(1, 1);
+var_100_y_1 = mat_cov_100_15(2, 2);
 
-var_100_x_2 = mat_cov_100_2(1, 1);
-var_100_y_2 = mat_cov_100_2(2, 2);
+var_100_x_2 = mat_cov_100_30(1, 1);
+var_100_y_2 = mat_cov_100_30(2, 2);
 
 % Calculs longueur d'axes
-l_axe_majeure_50_1 = 2*sqrt(var_50_x_1 * s)
-l_axe_mineure_50_1 = 2*sqrt(var_50_y_1 * s)
+l_axe_majeure_50_15 = 2*sqrt(var_50_x_1 * s)
+l_axe_mineure_50_15 = 2*sqrt(var_50_y_1 * s)
 
-l_axe_majeure_50_2 = 2*sqrt(var_50_x_2 * s)
-l_axe_mineure_50_2 = 2*sqrt(var_50_y_2 * s)
+l_axe_majeure_50_30 = 2*sqrt(var_50_x_2 * s)
+l_axe_mineure_50_30 = 2*sqrt(var_50_y_2 * s)
 
-l_axe_majeure_100_1 = 2*sqrt(var_100_x_1 * s)
-l_axe_mineure_100_1 = 2*sqrt(var_100_y_1 * s)
+l_axe_majeure_100_15 = 2*sqrt(var_100_x_1 * s)
+l_axe_mineure_100_15 = 2*sqrt(var_100_y_1 * s)
 
-l_axe_majeure_100_2 = 2*sqrt(var_100_x_2 * s)
-l_axe_mineure_100_2 = 2*sqrt(var_100_y_2 * s)
+l_axe_majeure_100_30 = 2*sqrt(var_100_x_2 * s)
+l_axe_mineure_100_30 = 2*sqrt(var_100_y_2 * s)
 
 %% Cas où l'on suppose une corrélation en x et y
 s = 5.991; % NC = 95%
 
-cov_mats = {mat_cov_50_1, mat_cov_50_2, mat_cov_100_1, mat_cov_100_2};
+cov_mats = {mat_cov_50_1, mat_cov_50_2, mat_cov_100_15, mat_cov_100_30};
 
 for i = (1:length(cov_mats))
     cov_data = cell2mat(cov_mats(i));
