@@ -238,6 +238,7 @@ for i = [1:length(funcs_to_plot)]
     scatter(indice, data, 1);
     plot_title = funcs_titles(i);
     title(plot_title);
+    axis([0 10000 -15 15])
 end
 sub = axes(fig, 'visible', 'off');
 sub.Title.Visible = 'on';
