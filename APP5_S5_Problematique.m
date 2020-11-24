@@ -106,6 +106,24 @@ for val = distribution
 end
 
 % f)------------------------
+index = (1:N);
+fig = figure;
+subplot(2,1,1)
+scatter(index, r_rand_50, 1);
+title("Valeurs de r générés aléatoirement avec D0 = 50 donc variance = 4")
+axis([0 10000 0 20])
+subplot(2,1,2)
+scatter(index, r_rand_100, 1);
+title("Valeurs de r générés aléatoirement avec D0 = 100 donc variance = 16")
+axis([0 10000 0 20])
+sub = axes(fig, 'visible', 'off');
+sub.XLabel.Visible = 'on';
+sub.YLabel.Visible = 'on';
+ylabel(sub, "Longueur de r (m)")
+xlabel(sub, 'Indice du nombre généré')
+
+% g)------------------------
+% Histogramme généré
 fig = figure;
 subplot(2,1,1)
 histogram(r_rand_50)
@@ -121,7 +139,7 @@ sub.YLabel.Visible = 'on';
 xlabel(sub, "Longueur de r (m)")
 ylabel(sub, 'Nombre d''occurrences')
 
-% g)------------------------
+% Histogramme théorique
 fig = figure;
 subplot(2,1,1)
 Rayleigh_th_50 = raylrnd(mean(r_rand_50)*sqrt(2/pi), N, 1);
@@ -285,7 +303,7 @@ ylabel(sub, 'Distance axiale Dy (m)')
 for i = [1:length(funcs_to_plot_full)]
     fig = figure(99);
     subplot(2, 4, i);
-    data = cell2mat(funcs_to_plot(i));
+    data = cell2mat(funcs_to_plot_full(i));
     histogram(data);
     plot_title = funcs_titles(i);
     title(plot_title);
@@ -295,7 +313,7 @@ for i = [1:length(funcs_to_plot_full)]
     ecart_type = sqrt(var(data));
     
     txt = {['Moyenne = ', num2str(moyenne)],['s = ', num2str(ecart_type)]};
-    text(5,400,txt)
+    text(mean(data)+4,400,txt)
 end
 sub = axes(fig, 'visible', 'off');
 sub.Title.Visible = 'on';
@@ -313,7 +331,8 @@ for i = [1:length(funcs_to_plot_full)]
     bin_mdpt=(edges(2:end)+edges(1:(end-1)))/2;
     freq_rel = freq_abs/N;
     stem(bin_mdpt, freq_rel);
-    title(strcat(plot_title, ' freq rel(%)'));
+    plot_title = funcs_titles(i);
+    title(plot_title);
 %     axis([-5 120 0 0.09]);
 end
 
@@ -338,14 +357,14 @@ ylabel(sub, 'Probabilité')
 fig = figure;
 for i = [1:length(funcs_to_plot_full)] 
     subplot(2, 4, i)
-    data = cell2mat(funcs_to_plot(i));
+    data = cell2mat(funcs_to_plot_full(i));
     histfit(data, 60)
     norm_fit = fitdist(data','Normal');
     
     mu = norm_fit.mu;
     sigma = norm_fit.sigma;
     txt = {['Mu = ', num2str(mu)],['sigma = ', num2str(sigma)]};
-    text(3,300,txt)
+    text(mu+4,300,txt)
     
     plot_title = funcs_titles(i);
     title(plot_title);
@@ -362,7 +381,7 @@ ylabel(sub, 'Nombre d''occurrences')
 % Example pour fitter la courbe normale sur le graphique de freq rel. (il
 % faut ajuster le nombre de classes dans 'histcounts'
 fig = figure;
-data = cell2mat(funcs_to_plot(1));
+data = cell2mat(funcs_to_plot_full(1));
 [freq_abs, edges] = histcounts(data, 15);
 bin_mdpt=(edges(2:end)+edges(1:(end-1)))/2;
 freq_rel = freq_abs/N;
